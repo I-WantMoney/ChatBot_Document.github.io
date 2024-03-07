@@ -375,7 +375,7 @@ else:
 ### ドキュメント＋ユーザーの質問＋会話履歴＝AI回答生成
 
 ```python
-# ファイルまたはURLがある場合、全てのテクストドックをfull_docに入れて、ベクトルストアーを作成する
+# ファイルまたはURLがある場合、全てのテキストドックをfull_docに入れて、ベクトルストアーを作成する
 if url_existance or file_existance:
     #--
     if pdf_raw_doc == [Document(page_content="")]:
