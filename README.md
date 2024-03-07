@@ -40,9 +40,11 @@ pip install -r requirements.txt
 * .envファイルにAPI Keyを置き換える
 
 * ターミナルで「streamlit run ファイル名」コマンドを実行
+
 ```terminal
 streamlit run full_app(v2).py
 ```
+
 * フォルダ内のPDFとMP3ファイルでアプリの機能を試す
 
 ## 3.各関数の説明
@@ -128,6 +130,7 @@ def get_text_from_mp3(mp3_file):
   # print(st.session_state.mp3_s)
   return audio_raw_doc
 ```
+
 * ウェブサイトからテキストを抽出
 
     WebBaseLoaderはウェブサイト上のテキスト情報を取得できますが、ページ上のほかのURLにアクセスすることはできません。
@@ -262,7 +265,6 @@ def click_button():
     st.session_state.clicked = True
 ```
 
-
 ## 4.main関数説明
 　　以下のコードは全部「def main():」の内容です、以下は「def main():」を省略します。
 
@@ -274,6 +276,7 @@ st.set_page_config(page_title="Chat with your files", page_icon="🤖")
 st.title("Upload files and chat with them")
 st.info("Click the :red[_Process_] button before asking questions\n(:red[_Only the first time you upload_])")
 ```
+
 　　効果は以下です。
 
 ![page title](https://github.com/I-WantMoney/ChatBot-full/raw/main/app_pic/page_title.png "Page Title")
