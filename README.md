@@ -159,6 +159,7 @@ def get_text_from_url(url):
 　　分割された文書を機器の分かるように、ベクトル化が必要です。
 
  * テキストの分割
+
 ```python
 from langchain.text_splitter import CharacterTextSplitter
 
@@ -217,6 +218,7 @@ def get_context_retriever_chain(vector_store):
 ```
 
 * ドキュメントのリストをモデルに渡すためのチェーンを作成
+
 ```python
 from langchain.chains import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
@@ -236,6 +238,7 @@ def get_conversational_rag_chain(retriever_chain):
 ```
 
 * AIの回答を取得
+
 ```python
 def get_response(user_input):
 
@@ -249,6 +252,7 @@ def get_response(user_input):
     
     return response['answer']
 ```
+
 ### ボタン状態の設定
 
 　　Streamlitの特性で、何も処理をしないと、ボタンなどの状態は保つことはできません、クリックされた状態を保つ関数を作ります。
@@ -352,6 +356,7 @@ else:
 
 ### URLのドキュメント化処理
 　　ファイルと同じように判断
+
 ```python
 # ファイルと同じような処理  
 if website_url is None or website_url == "":
@@ -365,6 +370,7 @@ else:
 ```
 
 ### ドキュメント＋ユーザーの質問＋会話履歴＝AI回答生成
+
 ```python
 # ファイルまたはURLがある場合、全てのテクストドックをfull_docに入れて、ベクトルストアーを作成する
 if url_existance or file_existance:
@@ -420,6 +426,7 @@ if url_existance or file_existance:
 　　ファイルをアプロードして、「Process」ボタンを押した後、ユーザー入力用のチャットバーを表示するようにします。
 
 　　「else:」の下は「ファイルのドキュメント化処理」、「URLのドキュメント化処理」、「ドキュメント＋ユーザーの質問＋会話履歴＝AI回答生成」の全てのコードです。
+
 ```python
 # ボタン
 st.button("Process", on_click=click_button)
