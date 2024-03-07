@@ -162,7 +162,7 @@ def get_text_from_url(url):
 　　分割された文書を機器の分かるように、ベクトル化が必要です。
 
  * テキストの分割
-
+   
 ```python
 from langchain.text_splitter import CharacterTextSplitter
 
@@ -178,7 +178,7 @@ def get_chunks(full_doc):
   
   return chunks
 ```
-
+   
 * ベクトルストア生成
 
 　　Embeddingモデルは自由に設定できます、ここではOpenAIのモデルを使用します。
