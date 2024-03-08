@@ -4,7 +4,7 @@
 
 [11]:https://rayoo.sharepoint.com/:u:/s/r-d/EfkuyV-0B-1Gg0jhjRHhggYBE6XBR4IifJHjurTI19boJQ?e=jwctGo
 
-## 1.必要なライブラリー
+## Part 1.必要なライブラリー
 * 必要なライブラリー
     * [streamlit][1]
     * [langchain][2]
@@ -33,7 +33,7 @@
 ```terminal
 pip install -r requirements.txt
 ```
-## 2.使い方
+## Part 2.使い方
 * OpenAIのAPI Keyの獲得、方法は[こちら][10]
 
 [10]:https://rayoo.sharepoint.com/:b:/s/r-d/EZ5Rdze3LBRAilBK2mcVvzABDMbQcWqhReP8n6ds-7BV8Q?e=caOUC3
@@ -47,7 +47,7 @@ streamlit run full_app(v2).py
 
 * フォルダ内のPDFとMP3ファイルでアプリの機能を試す
 
-## 3.各関数の説明
+## Part 3.各関数の説明
 
 　　本アプリはStreamlitのフレームワークで作成されます。Streamlit は、データスクリプトを数分で共有可能なWebアプリに変換することができます。言語はすべて```Python```で行われます。
 
@@ -269,7 +269,7 @@ def click_button():
     st.session_state.clicked = True
 ```
 
-## 4.main関数説明
+## Part 4.main関数説明
 　　以下のコードは全部「def main():」の内容です、以下は「def main():」を省略します。
 
 ### アプリケーションのページとタイトル設定
