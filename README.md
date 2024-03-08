@@ -1,7 +1,6 @@
 # チャットボットドキュメント
 
 　　このドキュメントはコードに対する説明です、すべてのコードではありません、コードは[こちら][11]をご参照ください。
-  <span style="color:red">这是一个红色文本。</span>
 
 [11]:https://rayoo.sharepoint.com/:u:/s/r-d/EfkuyV-0B-1Gg0jhjRHhggYBE6XBR4IifJHjurTI19boJQ?e=jwctGo
 
