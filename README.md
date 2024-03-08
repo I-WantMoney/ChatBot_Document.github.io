@@ -39,7 +39,7 @@ pip install -r requirements.txt
 [10]:https://rayoo.sharepoint.com/:b:/s/r-d/EZ5Rdze3LBRAilBK2mcVvzABDMbQcWqhReP8n6ds-7BV8Q?e=caOUC3
 * .envファイルにAPI Keyを置き換える
 
-* ターミナルで「streamlit run ファイル名」コマンドを実行
+* ```ターミナル```で「streamlit run ファイル名」コマンドを実行
 
 ```terminal
 streamlit run full_app(v2).py
