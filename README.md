@@ -1,6 +1,9 @@
 # チャットボットドキュメント
 
 　　このドキュメントはコードに対する説明です、すべてのコードではありません、コードは[こちら][11]をご参照ください。
+```diff
+- text in red
+```
 
 [11]:https://rayoo.sharepoint.com/:u:/s/r-d/EfkuyV-0B-1Gg0jhjRHhggYBE6XBR4IifJHjurTI19boJQ?e=jwctGo
 
