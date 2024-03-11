@@ -34,10 +34,10 @@
 pip install -r requirements.txt
 ```
 ## Part 2.使い方
-* OpenAIのAPI Keyの獲得、方法は[こちら][10]
+* OpenAIのAPI Keyを獲得、方法は[こちら][10]
 
 [10]:https://rayoo.sharepoint.com/:b:/s/r-d/EZ5Rdze3LBRAilBK2mcVvzABDMbQcWqhReP8n6ds-7BV8Q?e=caOUC3
-* .envファイルにAPI Keyを置き換える
+* .envファイルにAPI Keyを自分のものに置き換える
 
 * ```ターミナル```で「streamlit run ファイル名」コマンドを実行
 
