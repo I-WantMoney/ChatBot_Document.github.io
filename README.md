@@ -3,6 +3,7 @@
 　　このドキュメントはコードに対する説明です、すべてのコードではありません、コードは[こちら][11]をご参照ください。
   
 *以下は学習用の動画です。
+
   * [Langchain PDF App (GUI) | Create a ChatGPT For Your PDF in Python][12]
   * [Chat with Multiple PDFs | LangChain App Tutorial in Python (Free LLMs and Embeddings)][13]
   * [Tutorial | Chat with any Website using Python and Langchain (LATEST VERSION)][14]
