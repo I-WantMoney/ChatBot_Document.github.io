@@ -189,6 +189,7 @@ def get_chunks(full_doc):
 
 ```python
 from langchain_openai import OpenAIEmbeddings
+from langchain_community.vectorstores.chroma import Chroma
 
 def get_vectorstore(chunks):
   embeddings = OpenAIEmbeddings()
