@@ -12,7 +12,7 @@
 [13]:https://www.youtube.com/watch?v=dXxQ0LR-3Hg&t=1726s
 [14]:https://www.youtube.com/watch?v=bupx08ZgSFg&t=3636s
 
-## Part 1.必要なライブラリー
+## Part 1. 必要なライブラリー
 * 必要なライブラリー
     * [streamlit][1]
     * [langchain][2]
@@ -41,7 +41,7 @@
 ```terminal
 pip install -r requirements.txt
 ```
-## Part 2.使い方
+## Part 2. 使い方
 * OpenAIのAPI Keyを獲得、方法は[こちら][10]
 
 [10]:https://rayoo.sharepoint.com/:b:/s/r-d/EZ5Rdze3LBRAilBK2mcVvzABDMbQcWqhReP8n6ds-7BV8Q?e=caOUC3
@@ -55,17 +55,21 @@ streamlit run full_app(v2).py
 
 * フォルダ内のPDFとMP3ファイルでアプリの機能を試す
 
-## Part 3.各関数の説明
+## Part 3. 各関数の説明
 
-　　本アプリはStreamlitのフレームワークで作成されます。Streamlit は、データスクリプトを数分で共有可能なWebアプリに変換することができます。言語はすべて```Python```です。
+  本アプリはStreamlitのフレームワークで作成されます。Streamlit は、データスクリプトを数分で共有可能なWebアプリに変換することができます。言語はすべて```Python```です。
+  
+  RAGの流れは以下です、これからは各関数の役割を紹介します。
+   
+   ![RAG](https://github.com/I-WantMoney/ChatBot-full/raw/main/app_pic/RAG.png "RAG")
 
-### Streamlitの特性
+### 3.1 Streamlitの特性
 
 　　Streamlitアプリケーションでは、「操作」があるたびにコードを走り直す仕組みです、このせいでクリックやエンターキーなどの操作をすると、過去の処理結果は全部無くなってしまいます、処理結果を維持したい場合は```セッション```にステートを入れる必要があります。
 
 　　セッションはアプリケーションの起動とともに起動されます、アプリケーションが終了するまで```セッション```内部の情報を保つことができます。
 
-### .envファイルからAPI Keyなどを抽出
+### 3.2 .envファイルからAPI Keyなどを抽出
 
 　　最先頭に以下のコードを入れて、フォルダ内の.envファイルの内容を自動的に読み込むようにします。これがあればコード内で手動入力は不要になります、デプロイ時のAPI Keyの安全性が高まります。
 
@@ -76,8 +80,13 @@ from dotenv import load_dotenv
 
 load_dotenv()
 ```
+### 3.3 知識データの取得
 
-### テキスト抽出
+　　第一歩としては、データソースから知識データベースを作成します。
+
+  ![text_extract](https://github.com/I-WantMoney/ChatBot-full/raw/main/app_pic/text_extract.png "text extract")
+
+#### 3.3.1 テキスト抽出
 
 　　モデル使用料金を節約するために、新追加のファイルのみに対し、テキスト化の処理をします、すでに存在しているファイルは処理しません。
   
@@ -163,7 +172,7 @@ def get_text_from_url(url):
 
 ```
 
-### テキストの分割とベクトル化
+#### 3.3.2 テキストの分割とベクトル化
 
 　　RAG+LLMとは、人間の質問に一番合っている情報を知識ベースの中から見つけ出し、LLM経由で人間の分かる言葉を出力します。
 
@@ -206,18 +215,21 @@ def get_vectorstore(chunks):
   return vectorstore
 ```
 
-### 会話履歴の設定
+### 3.4 LLMに渡すためのPrompt設定
 
 　　ChatGPTウェブ版を使うとき、履歴にある話題の質問もできることにみんなは気づいたんでしょう。Langchainツールを使い、その機能を簡単に実現できます（統合されていますので、実は以下の設定をすれば十分です）。
 
+  ![prompt](https://github.com/I-WantMoney/ChatBot-full/raw/main/app_pic/prompt.png "prompt")
+
 * 会話履歴を取得してドキュメントを返すチェーンを作成
 
-LLMの選定は自由に選べます、ここではOpenAIのモデルです。
+    Promptに会話履歴を入れ、命令のような説明を追加してAIに会話履歴を参照させます。
 
 ```python
 from langchain_core.prompts import ChatPromptTemplate,MessagesPlaceholder
 from langchain.chains import create_history_aware_retriever
 
+# LLMの選定は自由に選べます、ここではOpenAIのモデルです
 llm_model = os.environ["OPENAI_API_MODEL"]
 def get_context_retriever_chain(vector_store):
   llm = ChatOpenAI(model=llm_model) # カッコ内でapi-keyの指定、モデルの指定などができます。コードの先頭にdotenvを使ったので、自動的に.envファイルからapi-keyを取得します
@@ -225,6 +237,7 @@ def get_context_retriever_chain(vector_store):
   prompt = ChatPromptTemplate.from_messages([
       MessagesPlaceholder(variable_name="chat_history"),
       ("user","{input}"),
+      # 指示文
       ("user","Given the above conversation, generate a search query to look up in order to get information relevant to the conversation")
   ])
   
@@ -235,6 +248,8 @@ def get_context_retriever_chain(vector_store):
 
 * ドキュメントのリストをモデルに渡すためのチェーンを作成
 
+  チャットボットに知識データを知らせるために、Prompt内に知識データを入れる必要があります。
+  
 ```python
 from langchain.chains import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
@@ -243,8 +258,12 @@ def get_conversational_rag_chain(retriever_chain):
   
   llm = ChatOpenAI(model=llm_model) # カッコ内でapi-keyの指定、モデルの指定などができます。コードの先頭にdotenvを使ったので、自動的に.envファイルからapi-keyを取得します
   prompt = ChatPromptTemplate.from_messages([
+
+      # contextは抽出された有用なデータ
       ("system","Answer the user's questions based on the below context:\n\n{context}"),
       MessagesPlaceholder(variable_name="chat_history"),
+
+      # inputはユーザーの質問文
       ("user","{input}")
   ])
   
@@ -269,7 +288,7 @@ def get_response(user_input):
     return response['answer']
 ```
 
-### ボタン状態の設定
+### 3.5 ボタン状態の設定
 
 　　Streamlitの特性で、何の処理もしないと、ボタンなどの状態（```state```）は保つことはできません、クリック状態をセッションに入れる関数を作ります。
 
@@ -278,10 +297,10 @@ def click_button():
     st.session_state.clicked = True
 ```
 
-## Part 4.main関数説明
+## Part 4. main関数説明
 　　以下のコードは全部「def main():」の内容です、以下は「def main():」を省略します。
 
-### アプリケーションのページとタイトル設定
+### 4.1 アプリケーションのページとタイトル設定
 
 ```python
 # app config
@@ -296,7 +315,7 @@ st.info("Click the :red[_Process_] button before asking questions\n(:red[_Only t
 
 ![st title](https://github.com/I-WantMoney/ChatBot-full/raw/main/app_pic/st_title.png "st title")
 
-### セッションに入れる要素の初期化
+### 4.2 セッションに入れる要素の初期化
 
 　　セッションに入れるものはアプリが起動している限り、状態（```state```）の変更を含めて、その状態をずっと維持します。
 
@@ -321,7 +340,7 @@ if "vector_store" not in st.session_state:
     st.session_state.vector_store = None
 ```
 
-### サイドバーの設定
+### 4.3 サイドバーの設定
 　　PDF、MP3、ウェブサイトをアップロード/入力するパーツをサイドバーに入れます。
 
 ```python
@@ -344,7 +363,7 @@ with st.sidebar:
 
 ![page title](https://github.com/I-WantMoney/ChatBot-full/raw/main/app_pic/sidebar.png "sidebar")
 
-### ファイルのドキュメント化処理
+### 4.4 ファイルのドキュメント化処理
 
 　　ファイルの存在情況次第で読み込みをするかどうかを判断
 
@@ -370,7 +389,7 @@ else:
         audio_raw_doc = [Document(page_content="")]
 ```
 
-### URLのドキュメント化処理
+### 4.5 URLのドキュメント化処理
 
 　　ファイルと同じように判断
 
@@ -386,7 +405,7 @@ else:
         url_doc = get_text_from_url(website_url)
 ```
 
-### ドキュメント＋ユーザーの質問＋会話履歴＝AI回答生成
+### 4.6 ドキュメント＋ユーザーの質問＋会話履歴＝AI回答生成
 
 ```python
 # ファイルまたはURLがある場合、全てのテキストドックをfull_docに入れて、ベクトルストアーを作成する
@@ -437,7 +456,7 @@ if url_existance or file_existance:
                 st.write(message.content)
 ```
 
-### ボタンの設定
+### 4.7 ボタンの設定
 　　何もアップロードしないと、当然AIは質問に答えられません、この時エラーが発生しちゃいます。
   
 　　それを防ぐために、ファイルをアプロードし、「```Process```」ボタンを押した後、ユーザー入力用のチャットバーを表示するような仕組みを作成します。
@@ -462,4 +481,5 @@ if st.session_state.clicked:
             ...
             ...
 ```
+
 
